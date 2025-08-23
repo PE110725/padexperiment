@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      /* 🔹 Default background for desktops */
+      background: url("plastics-map.png") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* 🔹 On mobiles/tablets show full image */
+    @media (max-width: 768px) {
+      body {
+        background-size: contain;
+        background-position: center top;
+        background-color: #fff; /* fill empty space */
+      }
+    }
+
+    /* Overlay so text/cards are readable */
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.85);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      padding: 10px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <h1>Welcome to Plastics World</h1>
+    </header>
+
+    <div class="menu">
+      <div class="card">
+        <a href="pigment_entry.html">➕ Add Pigment Data</a>
+      </div>
+      <div class="card">
+        <a href="view.html">📂 Search Pigment</a>
+      </div>
+      <div class="card">
+        <a href="update_pigments.html">⚙️ Update Pigment</a>
+      </div>
+      <div class="card">
+        <a href="#">📊 Reports</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
