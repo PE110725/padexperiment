@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ENTER PIGMENT PROPERTIES</title>
+  <style>
+    h2 {
+      text-align: center;
+      color: #FF0000;
+      margin-bottom: 40px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background:#FAD5A5; no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #0073e6;
+      color: white;
+      padding: 8px 14px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background: #005bb5;
+    }
+
+    form {
+      max-width: 800px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    input, select, textarea {
+      padding: 6px;
+      width: 100%;
+    }
+
+    button {
+      grid-column: span 2;
+      padding: 10px;
+      background: #0073e6;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005bb5;
+    }
+
+    .popup-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: #FF0000;
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+      z-index: 1000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">⬅ Back to Dashboard</a>
+  <h2>ENTER PIGMENT PROPERTIES</h2>
+
+  <form id="entryForm">
+    <input type="text" name="pigmentName" placeholder="Pigment Name" required>
+    <input type="text" name="pigmentCompany" placeholder="Pigment Company">
+    <input type="text" name="commonName" placeholder="Common Name">
+    <input type="text" name="ciName" placeholder="CI Name of Pigment" required>
+    <input type="text" name="tone" placeholder="Tone of Pigment">
+    <input type="text" name="transparency" placeholder="Transparency/Opacity">
+    <input type="text" name="polymers" placeholder="Compatible Polymers">
+    <input type="text" name="acidity" placeholder="Acidity/Basicity">
+    <input type="text" name="pigmentType" placeholder="Pigment Type">
+    <input type="text" name="heatStability" placeholder="Heat Stability">
+
+    <select name="tintingStrength" required>
+      <option value="" disabled selected hidden>Tinting Strength</option>
+      <option value="HIGH">HIGH</option>
+      <option value="MEDIUM">MEDIUM</option>
+      <option value="LOW">LOW</option>
+    </select>
+
+    <input type="text" name="weatherFastness" placeholder="Weather Fastness">
+    <input type="text" name="lightFastness" placeholder="Light Fastness">
+    <input type="text" name="phValue" placeholder="pH Value">
+
+    <select name="compliance" required>
+      <option value="" disabled selected hidden>Compliance</option>
+      <option value="RoHS">RoHS</option>
+      <option value="Non RoHS">Non RoHS</option>
+    </select>
+    <select name="fda" required>
+      <option value="" disabled selected hidden>FDA</option>
+      <option value="FOOD GRADE">FOOD GRADE</option>
+      <option value="NON FOOD GRADE">NON FOOD GRADE</option>
+    </select>
+    <input type="text" name="price" placeholder="Price">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="popup" class="popup-message"></div>
+
+  <script>
+    const popup = document.getElementById("popup");
+
+    // Auto-uppercase for all text inputs & textarea
+    const inputs = document.querySelectorAll("input[type=text], textarea");
+    inputs.forEach(input => {
+      input.addEventListener("input", () => {
+        input.value = input.value.toUpperCase();
+      });
+    });
+
+    document.getElementById("entryForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = this;
+      const formData = new FormData(form);
+
+      fetch("https://script.google.com/macros/s/AKfycby6umL2cJcosUI-sbP0fh65xbZCqKzKfxYI-L0k9HZsCn9nashcKyAaQaok4OpS9wPLkw/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())  // first read as text
+      .then(text => {
+        let data;
+        try {
+          data = JSON.parse(text);  // try parsing JSON
+        } catch (err) {
+          throw new Error("Invalid JSON response: " + text);
+        }
+
+        if (data.result === "exists") {
+          popup.innerText = "❌ Pigment data already exists!";
+        } else if (data.result === "success") {
+          popup.innerText = "✅ Data submitted successfully!";
+          form.reset();
+        } else {
+          popup.innerText = "❌ Error: " + (data.message || "Unexpected response");
+        }
+
+        popup.style.display = "block";
+        setTimeout(() => { popup.style.display = "none"; }, 3000);
+      })
+      .catch(err => {
+        popup.innerText = "❌ Error: " + err.message;
+        popup.style.display = "block";
+        setTimeout(() => { popup.style.display = "none"; }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>
