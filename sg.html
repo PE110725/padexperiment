@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Submit Data to Google Sheets</title>
+    <title>Material SG Calculator</title>
     <script>
         function submitForm() {
-            // Collect form data
+            // Collect the values from the form
             const code = document.getElementById("code").value;
             const polymer = document.getElementById("polymer").value;
             const colour = document.getElementById("colour").value;
-            const weightA = document.getElementById("weightA").value;
-            const weightB = document.getElementById("weightB").value;
-            const weightC = document.getElementById("weightC").value;
             const weightD = document.getElementById("weightD").value;
+            const weightE = document.getElementById("weightE").value;
+            const weightF = document.getElementById("weightF").value;
 
-            // Submit data to Google Apps Script
-            fetch('https://script.google.com/macros/s/AKfycbwrlBvf_K6lH3y-OXA-RKa3KSphIkNtrbMmTdi7UPW3a9opv-AreJl2K_aC9w0Vlf6a/exec', {
+            // Submit data to Google Apps Script (doPost function)
+            fetch('https://script.google.com/macros/s/AKfycbw-Uha8IbnTXhKyUpOkGTJK483e52itXRqbkeS1yLpPUteTHKuvB2DuoQ-e-Z7whY95/exec', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,49 +22,44 @@
                     code: code,
                     polymer: polymer,
                     colour: colour,
-                    weightA: weightA,
-                    weightB: weightB,
-                    weightC: weightC,
-                    weightD: weightD
+                    weightD: weightD,
+                    weightE: weightE,
+                    weightF: weightF
                 })
             })
             .then(response => response.json())
             .then(data => {
-                // Display the calculated value after submission
-                const calculatedValue = data.calculatedValue;
-                document.getElementById("calculatedValue").innerText = `Calculated Value: ${calculatedValue}`;
+                // Display the SG value after calculation
+                document.getElementById("result").innerText = `SG Value: ${data.sgValue} g/cc`;
             })
             .catch(error => console.error('Error:', error));
         }
     </script>
 </head>
 <body>
-    <h2>Submit Data</h2>
+    <h2>Enter Material Details</h2>
     <form onsubmit="event.preventDefault(); submitForm();">
         <label for="code">Code:</label><br>
-        <input type="text" id="code" name="code"><br><br>
+        <input type="text" id="code" name="code" required><br><br>
 
         <label for="polymer">Polymer:</label><br>
-        <input type="text" id="polymer" name="polymer"><br><br>
+        <input type="text" id="polymer" name="polymer" required><br><br>
 
         <label for="colour">Colour:</label><br>
-        <input type="text" id="colour" name="colour"><br><br>
+        <input type="text" id="colour" name="colour" required><br><br>
 
-        <label for="weightA">Weight A:</label><br>
-        <input type="number" id="weightA" name="weightA"><br><br>
+        <label for="weightD">Weight of RD Bottle with IP (without Tare):</label><br>
+        <input type="number" step="0.01" id="weightD" name="weightD" required><br><br>
 
-        <label for="weightB">Weight B:</label><br>
-        <input type="number" id="weightB" name="weightB"><br><br>
+        <label for="weightE">Weight of Material with Tare RD Bottle:</label><br>
+        <input type="number" step="0.01" id="weightE" name="weightE" required><br><br>
 
-        <label for="weightC">Weight C:</label><br>
-        <input type="number" id="weightC" name="weightC"><br><br>
+        <label for="weightF">Weight of Granule in IP (without Tare):</label><br>
+        <input type="number" step="0.01" id="weightF" name="weightF" required><br><br>
 
-        <label for="weightD">Weight D:</label><br>
-        <input type="number" id="weightD" name="weightD"><br><br>
-
-        <input type="submit" value="Submit">
+        <input type="submit" value="Calculate">
     </form>
 
-    <div id="calculatedValue" style="margin-top: 20px;"></div>
+    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
 </body>
 </html>
