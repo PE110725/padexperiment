@@ -8,18 +8,36 @@
             const code = document.getElementById("code").value;
             const polymer = document.getElementById("polymer").value;
             const colour = document.getElementById("colour").value;
-            const weightD = document.getElementById("weightD").value;
-            const weightE = document.getElementById("weightE").value;
-            const weightF = document.getElementById("weightF").value;
+            let weightD = document.getElementById("weightD").value;
+            let weightE = document.getElementById("weightE").value;
+            let weightF = document.getElementById("weightF").value;
+
+            // Check if any required field is empty or invalid
+            if (!code || !polymer || !colour || !weightD || !weightE || !weightF) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Ensure values are parsed as floats and formatted to two decimal places
+            weightD = parseFloat(weightD).toFixed(2);
+            weightE = parseFloat(weightE).toFixed(2);
+            weightF = parseFloat(weightF).toFixed(2);
 
             // Send the data via a GET request
-            fetch(`https://script.google.com/macros/s/AKfycbyKbKbtxCsc6vhOYT4COsBIqDEHyYLJUeDZ8NwYDVQyNQCY_lzFzn02yPviVtdsClBO/exec?code=${code}&polymer=${polymer}&colour=${colour}&weightD=${weightD}&weightE=${weightE}&weightF=${weightF}`)
+            fetch(`https://script.google.com/macros/s/AKfycbxLMXa3LQ202a3xHWlIddtEThqjqMCabYIDU-Bz0zuSCwBrPm0DcULxsWukpGvy4_HY/exec?code=${encodeURIComponent(code)}&polymer=${encodeURIComponent(polymer)}&colour=${encodeURIComponent(colour)}&weightD=${encodeURIComponent(weightD)}&weightE=${encodeURIComponent(weightE)}&weightF=${encodeURIComponent(weightF)}`)
             .then(response => response.json())
             .then(data => {
                 // Display the SG value after calculation
-                document.getElementById("result").innerText = `SG Value: ${data.sgValue} g/cc`;
+                if (data.error) {
+                    document.getElementById("result").innerText = data.error;
+                } else {
+                    document.getElementById("result").innerText = `SG Value: ${data.sgValue} g/cc`;
+                }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("result").innerText = "An error occurred. Please try again.";
+            });
         }
     </script>
 </head>
