@@ -12,21 +12,8 @@
             const weightE = document.getElementById("weightE").value;
             const weightF = document.getElementById("weightF").value;
 
-            // Submit data to Google Apps Script (doPost function)
-            fetch('https://script.google.com/macros/s/AKfycbw-Uha8IbnTXhKyUpOkGTJK483e52itXRqbkeS1yLpPUteTHKuvB2DuoQ-e-Z7whY95/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    code: code,
-                    polymer: polymer,
-                    colour: colour,
-                    weightD: weightD,
-                    weightE: weightE,
-                    weightF: weightF
-                })
-            })
+            // Send the data via a GET request
+            fetch(`https://script.google.com/macros/s/AKfycbyKbKbtxCsc6vhOYT4COsBIqDEHyYLJUeDZ8NwYDVQyNQCY_lzFzn02yPviVtdsClBO/exec?code=${code}&polymer=${polymer}&colour=${colour}&weightD=${weightD}&weightE=${weightE}&weightF=${weightF}`)
             .then(response => response.json())
             .then(data => {
                 // Display the SG value after calculation
