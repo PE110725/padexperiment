@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Data to Google Sheets</title>
+    <script>
+        function submitForm() {
+            // Collect form data
+            const code = document.getElementById("code").value;
+            const polymer = document.getElementById("polymer").value;
+            const colour = document.getElementById("colour").value;
+            const weightA = document.getElementById("weightA").value;
+            const weightB = document.getElementById("weightB").value;
+            const weightC = document.getElementById("weightC").value;
+            const weightD = document.getElementById("weightD").value;
+
+            // Submit data to Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbwrlBvf_K6lH3y-OXA-RKa3KSphIkNtrbMmTdi7UPW3a9opv-AreJl2K_aC9w0Vlf6a/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: code,
+                    polymer: polymer,
+                    colour: colour,
+                    weightA: weightA,
+                    weightB: weightB,
+                    weightC: weightC,
+                    weightD: weightD
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the calculated value after submission
+                const calculatedValue = data.calculatedValue;
+                document.getElementById("calculatedValue").innerText = `Calculated Value: ${calculatedValue}`;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h2>Submit Data</h2>
+    <form onsubmit="event.preventDefault(); submitForm();">
+        <label for="code">Code:</label><br>
+        <input type="text" id="code" name="code"><br><br>
+
+        <label for="polymer">Polymer:</label><br>
+        <input type="text" id="polymer" name="polymer"><br><br>
+
+        <label for="colour">Colour:</label><br>
+        <input type="text" id="colour" name="colour"><br><br>
+
+        <label for="weightA">Weight A:</label><br>
+        <input type="number" id="weightA" name="weightA"><br><br>
+
+        <label for="weightB">Weight B:</label><br>
+        <input type="number" id="weightB" name="weightB"><br><br>
+
+        <label for="weightC">Weight C:</label><br>
+        <input type="number" id="weightC" name="weightC"><br><br>
+
+        <label for="weightD">Weight D:</label><br>
+        <input type="number" id="weightD" name="weightD"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="calculatedValue" style="margin-top: 20px;"></div>
+</body>
+</html>
